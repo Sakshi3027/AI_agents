@@ -1,0 +1,11 @@
+crewai==0.80.0
+crewai-tools
+python-dotenv
+openai
+pandas
+numpy
+matplotlib
+seaborn
+plotly
+openpyxl
+scikit-learn
