@@ -25,6 +25,70 @@ An intelligent multi-agent system powered by GPT-4 and CrewAI that autonomously 
 - **ROC Curves & Confusion Matrices**
 - **Best Model Auto-Selection** and saving
 
+### Phase 3: Interactive Web Dashboard ✅ NEW!
+- **Streamlit Web Interface** for easy access
+- **Drag-and-Drop File Upload** for any CSV
+- **Real-time Data Exploration** with interactive charts
+- **One-Click ML Training** with progress tracking
+- **Live Model Comparison** with Plotly visualizations
+- **Interactive Results Dashboard**
+- **Beautiful Gradient UI** with modern design
+- **Sample Data** included for testing
+
+## 🌐 Web Interface
+
+### Launch the Dashboard
+```bash
+streamlit run streamlit_app.py
+```
+
+The app will open in your browser at `http://localhost:8501`
+
+### Features:
+
+#### 🏠 Home Page
+- Overview of system capabilities
+- Quick navigation
+- Getting started guide
+
+#### 📊 Data Analysis
+- Upload any CSV file
+- Interactive data preview
+- Statistical summaries
+- Dynamic visualizations:
+  - Distribution plots
+  - Correlation heatmaps
+  - Scatter plots
+  - Box plots
+
+#### 🤖 ML Pipeline
+- Configure target variable
+- Select features
+- One-click model training
+- Real-time progress tracking
+- Automatic model comparison
+
+#### 📈 Results
+- Interactive performance charts
+- Confusion matrices
+- ROC curves
+- Feature importance analysis
+- Best model recommendation
+
+### Screenshots
+
+#### Web Interface Home
+![Streamlit Home](screenshots/streamlit_home.png)
+
+#### ML Training with Progress
+![Training Progress](screenshots/streamlit_training.png)
+
+#### Model Performance Dashboard
+![Performance Table](screenshots/streamlit_performance.png)
+
+#### Interactive Results
+![Results Visualization](screenshots/streamlit_results.png)
+
 ##  Demo
 
 ###  Sample Visualizations
@@ -184,24 +248,53 @@ cp .env.example .env
 
 ## 🚀 Usage
 
-### Run Phase 1: Data Analysis
+### Option 1: Web Interface (Recommended) 🌐
+
+Launch the interactive dashboard:
+```bash
+streamlit run streamlit_app.py
+```
+
+The app will open automatically at `http://localhost:8501`
+
+**Features:**
+- 📤 Drag-and-drop CSV file upload
+- 📊 Interactive data exploration
+- 🤖 One-click ML model training
+- 📈 Real-time visualizations
+- 💾 Download results and reports
+
+**Quick Start:**
+1. Click "Load Sample Data" in sidebar
+2. Navigate to "Data Analysis" to explore
+3. Go to "ML Pipeline" and click "Train Models"
+4. View "Results" for comprehensive analysis
+
+---
+
+### Option 2: Command Line - Data Analysis Pipeline
 ```bash
 python main.py
 ```
 
-Generates:
+**Generates:**
 - Exploratory data analysis
 - Statistical insights
-- Visualizations
-- Comprehensive report
+- Distribution plots
+- Correlation heatmaps
+- Comprehensive markdown report
 
-### Run Phase 2: Machine Learning Pipeline
+**Output Location:** `outputs/analysis_report.md`
+
+---
+
+### Option 3: Command Line - ML Pipeline
 ```bash
 python main_ml.py
 ```
 
-Generates:
-- Trained ML models
+**Generates:**
+- 4 trained ML models (Logistic Regression, Decision Tree, Random Forest, Gradient Boosting)
 - Model comparison charts
 - Confusion matrices
 - ROC curves
@@ -209,18 +302,62 @@ Generates:
 - ML analysis report
 - Saved best model (`.pkl`)
 
+**Output Location:** `outputs/ml_analysis_report.md` and `outputs/best_model.pkl`
+
+---
+
 ### Use the Saved Model
 ```python
 import joblib
 import pandas as pd
+import numpy as np
 
-# Load the best model
+# Load the trained model
 model = joblib.load('outputs/best_model.pkl')
 
-# Make predictions on new data
-new_patient = pd.DataFrame({...})  # Your patient data
+# Prepare new patient data (example)
+new_patient = pd.DataFrame({
+    'age': [55],
+    'bmi': [28.5],
+    'blood_pressure_systolic': [140],
+    'blood_pressure_diastolic': [90],
+    'cholesterol': [220],
+    'glucose': [120],
+    'exercise_hours_per_week': [3],
+    'gender_Male': [1],  # Encoded: 1 for Male, 0 for Female
+    'smoker_Yes': [1]    # Encoded: 1 for Yes, 0 for No
+})
+
+# Make prediction
 prediction = model.predict(new_patient)
 probability = model.predict_proba(new_patient)
+
+print(f"Prediction: {'Heart Disease' if prediction[0] == 1 else 'No Heart Disease'}")
+print(f"Probability: {probability[0][1]:.2%}")
+```
+
+**Example Output:**
+```
+Prediction: Heart Disease
+Probability: 68.50%
+```
+
+---
+
+### Configuration
+
+All settings can be modified in the respective files:
+
+- **API Key:** Set in `.env` file
+- **Data Path:** Update `DATA_FILE` variable in `main.py` or `main_ml.py`
+- **Target Column:** Modify `TARGET_COLUMN` in `main_ml.py`
+- **LLM Model:** Change `LLM_MODEL` (default: `gpt-4o-mini`)
+
+### Environment Variables
+
+Create a `.env` file:
+```bash
+OPENAI_API_KEY=your_openai_api_key_here
 ```
 
 ## Output
@@ -245,30 +382,79 @@ probability = model.predict_proba(new_patient)
 ## 📁 Project Structure
 ```
 AI_agents/
-├── agents/              # AI agent definitions
-│   ├── data_loader_agent.py
-│   ├── eda_agent.py
-│   ├── visualization_agent.py
-│   ├── insight_agent.py
-│   ├── report_agent.py
-│   ├── feature_engineer_agent.py      # ✨ Phase 2
-│   ├── model_selector_agent.py        # ✨ Phase 2
-│   ├── model_trainer_agent.py         # ✨ Phase 2
-│   └── model_evaluator_agent.py       # ✨ Phase 2
-├── utils/               # Helper functions
-│   ├── data_utils.py
-│   └── ml_utils.py                    # ✨ Phase 2
-├── data/               # Sample datasets
-├── outputs/            # Generated reports & visualizations
-│   ├── *.png          # Visualizations
-│   ├── *.md           # Analysis reports
-│   └── best_model.pkl # Trained ML model ✨
-├── screenshots/        # README images
-├── main.py             # Phase 1: Data analysis pipeline
-├── main_ml.py          # Phase 2: ML pipeline ✨
-├── .env.example        # Environment template
-└── requirements.txt    # Dependencies
+├── agents/                           # AI agent definitions (9 agents)
+│   ├── data_loader_agent.py         # Data quality validation
+│   ├── eda_agent.py                 # Statistical analysis
+│   ├── visualization_agent.py       # Chart interpretation
+│   ├── insight_agent.py             # Insights extraction
+│   ├── report_agent.py              # Report generation
+│   ├── feature_engineer_agent.py    # ✨ Phase 2: Feature engineering
+│   ├── model_selector_agent.py      # ✨ Phase 2: Algorithm selection
+│   ├── model_trainer_agent.py       # ✨ Phase 2: Model training
+│   └── model_evaluator_agent.py     # ✨ Phase 2: Performance evaluation
+│
+├── utils/                            # Helper functions
+│   ├── data_utils.py                # Data loading, EDA, visualizations
+│   └── ml_utils.py                  # ✨ Phase 2: ML training & evaluation
+│
+├── data/                             # Sample datasets
+│   └── healthcare_data.csv          # Sample healthcare dataset (500 records)
+│
+├── outputs/                          # Generated reports & visualizations
+│   ├── distributions.png            # Distribution plots
+│   ├── correlation_heatmap.png      # Correlation analysis
+│   ├── categorical_distributions.png # Categorical analysis
+│   ├── model_comparison.png         # ✨ Phase 2: Model performance
+│   ├── confusion_matrices.png       # ✨ Phase 2: Confusion matrices
+│   ├── roc_curves.png              # ✨ Phase 2: ROC curves
+│   ├── feature_importance.png      # ✨ Phase 2: Feature rankings
+│   ├── analysis_report.md          # Phase 1 report
+│   ├── ml_analysis_report.md       # ✨ Phase 2: ML report
+│   └── best_model.pkl              # ✨ Phase 2: Trained model
+│
+├── screenshots/                      # README images
+│   ├── distributions.png            # Phase 1 visualizations
+│   ├── correlation_heatmap.png      
+│   ├── categorical_distributions.png
+│   ├── model_comparison.png         # Phase 2 visualizations
+│   ├── confusion_matrices.png       
+│   ├── roc_curves.png               
+│   ├── feature_importance.png       
+│   ├── streamlit_home.png          # ✨ Phase 3: Web interface
+│   ├── streamlit_data_analysis.png # ✨ Phase 3: Data exploration
+│   ├── streamlit_training.png      # ✨ Phase 3: ML training
+│   ├── streamlit_performance.png   # ✨ Phase 3: Results table
+│   └── streamlit_results.png       # ✨ Phase 3: Interactive charts
+│
+├── main.py                          # Phase 1: Data analysis pipeline
+├── main_ml.py                       # Phase 2: ML training pipeline
+├── streamlit_app.py                 # ✨ Phase 3: Web dashboard
+├── create_sample_data.py            # Generate sample healthcare data
+├── .env                             # Environment variables (not in git)
+├── .env.example                     # Environment template
+├── .gitignore                       # Git ignore rules
+├── requirements.txt                 # Python dependencies
+└── README.md                        # Project documentation
 ```
+
+### 📊 File Count Summary
+
+- **9 AI Agents** (5 Phase 1 + 4 Phase 2)
+- **2 Utility Modules** (data processing + ML)
+- **3 Main Scripts** (Phase 1, 2, 3)
+- **8+ Visualizations** (auto-generated)
+- **3 Analysis Reports** (EDA, ML, Web)
+- **1 Trained Model** (saved as .pkl)
+
+### 🔐 Security Notes
+
+Files **NOT** tracked in Git (see `.gitignore`):
+- `.env` - Contains API keys
+- `venv/` - Virtual environment
+- `__pycache__/` - Python cache
+- `outputs/*.png` - Generated visualizations (optional)
+- `outputs/*.md` - Generated reports (optional)
+- `outputs/*.pkl` - Trained models (optional)
 
 ##  Use Cases
 
@@ -278,18 +464,19 @@ AI_agents/
 - Research data exploration
 - Educational projects
 
+
 ## 🔮 Future Enhancements
 
-- [x] ~~Machine learning model training~~ ✅ COMPLETED (Phase 2)
-- [ ] Interactive Streamlit dashboard (Phase 3)
-- [ ] Web scraping for research papers
-- [ ] Time series forecasting
-- [ ] NLP for text analysis
-- [ ] Deep learning models (Neural Networks)
-- [ ] Model explainability with SHAP values
-- [ ] AutoML with hyperparameter optimization
+- [x] ~~Machine learning model training~~ ✅ Phase 2
+- [x] ~~Interactive Streamlit dashboard~~ ✅ Phase 3
 - [ ] Model deployment with FastAPI
 - [ ] Docker containerization
+- [ ] Deep learning models
+- [ ] SHAP explainability
+- [ ] Automated hyperparameter tuning
+- [ ] Time series forecasting
+- [ ] NLP for text analysis
+- [ ] Web scraping for research papers
 
 ## License
 

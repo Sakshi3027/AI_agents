@@ -20,7 +20,11 @@ def prepare_ml_data(df, target_column):
     print(f"   Target column: {target_column}")
     
     # Separate features and target
-    X = df.drop(columns=[target_column, 'patient_id'])  # Remove ID column
+    # Remove target and ID columns if they exist
+    columns_to_drop = [target_column]
+    if 'patient_id' in df.columns:
+        columns_to_drop.append('patient_id')
+    X = df.drop(columns=columns_to_drop)
     y = df[target_column]
     
     # Encode target if categorical
