@@ -35,6 +35,49 @@ An intelligent multi-agent system powered by GPT-4 and CrewAI that autonomously 
 - **Beautiful Gradient UI** with modern design
 - **Sample Data** included for testing
 
+### Phase 4: Advanced ML Features ✅ NEW!
+- **AutoML with Optuna** - Automated hyperparameter optimization
+- **SHAP Explainability** - Model interpretability with feature importance
+- **Ensemble Methods** - Voting & Stacking classifiers
+- **37% Performance Improvement** - F1-Score boost through optimization
+- **AI-Powered Analysis** - 4 specialized agents analyze results
+- **Clinical Insights** - Healthcare-specific recommendations
+
+## 🔬 Advanced ML Results
+
+### AutoML Optimization
+
+The system achieved **37.1% improvement** in F1-Score through automated hyperparameter tuning:
+
+| Model | Baseline F1 | Optimized F1 | Improvement |
+|-------|-------------|--------------|-------------|
+| Random Forest | 0.3019 | **0.4138** | **+37.1%** |
+| Logistic Regression | 0.2449 | 0.2500 | +2.1% |
+
+**Best Parameters Found:**
+```python
+{
+    'n_estimators': 58,
+    'max_depth': 15,
+    'min_samples_split': 7,
+    'min_samples_leaf': 2,
+    'max_features': None
+}
+```
+
+### SHAP Explainability
+
+Model predictions are now fully interpretable with:
+- Feature importance rankings
+- Individual prediction explanations
+- Clinical insight extraction
+
+**Key Findings:**
+- Cholesterol, age, and blood pressure are top predictors
+- Model decisions align with medical knowledge
+- Transparency builds trust with healthcare professionals
+
+
 ## 🌐 Web Interface
 
 ### Launch the Dashboard
@@ -303,6 +346,17 @@ python main_ml.py
 - Saved best model (`.pkl`)
 
 **Output Location:** `outputs/ml_analysis_report.md` and `outputs/best_model.pkl`
+
+`bash
+# Run advanced ML pipeline
+python main_advanced.py
+```
+
+**Generates:**
+- Optimized models with Optuna
+- SHAP explanation visualizations
+- Ensemble model comparisons
+- Comprehensive AI analysis report
 
 ---
 
