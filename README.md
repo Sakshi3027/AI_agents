@@ -5,7 +5,7 @@
 [License](https://img.shields.io/badge/license-MIT-blue.svg)
 An intelligent multi-agent system powered by GPT-4 and CrewAI that autonomously performs end-to-end data analysis.
 
-## 🎯 Features
+## Features
 
 ### Phase 1: Data Analysis Pipeline 
 - **5 Specialized AI Agents** working collaboratively
@@ -43,16 +43,27 @@ An intelligent multi-agent system powered by GPT-4 and CrewAI that autonomously 
 - **AI-Powered Analysis** - 4 specialized agents analyze results
 - **Clinical Insights** - Healthcare-specific recommendations
 
-## 🔬 Advanced ML Results
+### Phase 5: Production API Deployment ✅ NEW!
+- **Live REST API deployed** on Render.com
+- **Docker Containerization** for consistent deployment
+- **Interactive API Documentation** with Swagger UI
+- **Health Monitoring** with automatic health checks
+- **Fast Response Times** (<200ms for predictions)
+- **Real-time Predictions** via RESTful endpoints
+- **Batch Processing** for multiple predictions
+- **Usage Statistics tracking and monitoring**
+- **CORS Enabled for web application integration**
+
+## Advanced ML Results
 
 ### AutoML Optimization
 
 The system achieved **37.1% improvement** in F1-Score through automated hyperparameter tuning:
 
-| Model | Baseline F1 | Optimized F1 | Improvement |
-|-------|-------------|--------------|-------------|
-| Random Forest | 0.3019 | **0.4138** | **+37.1%** |
-| Logistic Regression | 0.2449 | 0.2500 | +2.1% |
+| Model               | Baseline F1 | Optimized F1 | Improvement |
+|---------------------|-------------|--------------|-------------|
+| Random Forest       | 0.3019      | 0.4138       | +37.1%      |
+| Logistic Regression | 0.2449      | 0.2500       | +2.1%.      |
 
 **Best Parameters Found:**
 ```python
@@ -77,14 +88,23 @@ Model predictions are now fully interpretable with:
 - Model decisions align with medical knowledge
 - Transparency builds trust with healthcare professionals
 
+## API Endpoints
+Method | Endpoint      | Description 
+GET    |/              | Welcome message & API info
+GET    |/health        | Health check & model status
+POST   |/predict       | Single patient heart disease prediction
+POST   |/batch-predict | Batch predictions from CSV file
+GET    |/stats         | API usage statistics
+GET    |/model-info    | Model details & features
+GET    |/docs          | Interactive Swagger UI documentation
 
-## 🌐 Web Interface
+
+## Web Interface
 
 ### Launch the Dashboard
 ```bash
 streamlit run streamlit_app.py
 ```
-
 The app will open in your browser at `http://localhost:8501`
 
 ### Features:
@@ -176,12 +196,12 @@ The system automatically generates comprehensive visualizations:
 
 The system automatically trained and evaluated 4 models:
 
-| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
-|-------|----------|-----------|--------|----------|---------|
-| Logistic Regression | ~0.75 | ~0.72 | ~0.68 | ~0.67 | ~0.82 |
-| Decision Tree | ~0.72 | ~0.69 | ~0.64 | ~0.64 | ~0.78 |
-| **Random Forest** ⭐ | **~0.81** | **~0.78** | **~0.75** | **~0.75** | **~0.88** |
-| Gradient Boosting | ~0.79 | ~0.76 | ~0.72 | ~0.72 | ~0.86 |
+| Model               | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
+|---------------------|----------|-----------|--------|----------|---------|
+| Logistic Regression | ~0.75    | ~0.72     | ~0.68  | ~0.67    | ~0.82   |
+| Decision Tree       | ~0.72.   | ~0.69     | ~0.64  | ~0.64    | ~0.78   |
+| Random Forest       | ~0.81    | ~0.78     | ~0.75  | ~0.75    | ~0.88   |
+| Gradient Boosting   | ~0.79    | ~0.76     | ~0.72  | ~0.72    | ~0.86   |
 
 **Best Model:** Random Forest (Auto-selected based on F1-Score)
 
@@ -289,6 +309,7 @@ cp .env.example .env
 # Add your OPENAI_API_KEY to .env
 ```
 
+
 ## 🚀 Usage
 
 ### Option 1: Web Interface (Recommended) 🌐
@@ -301,11 +322,11 @@ streamlit run streamlit_app.py
 The app will open automatically at `http://localhost:8501`
 
 **Features:**
-- 📤 Drag-and-drop CSV file upload
-- 📊 Interactive data exploration
-- 🤖 One-click ML model training
-- 📈 Real-time visualizations
-- 💾 Download results and reports
+- Drag-and-drop CSV file upload
+- Interactive data exploration
+- One-click ML model training
+- Real-time visualizations
+- Download results and reports
 
 **Quick Start:**
 1. Click "Load Sample Data" in sidebar
@@ -407,6 +428,7 @@ All settings can be modified in the respective files:
 - **Target Column:** Modify `TARGET_COLUMN` in `main_ml.py`
 - **LLM Model:** Change `LLM_MODEL` (default: `gpt-4o-mini`)
 
+
 ### Environment Variables
 
 Create a `.env` file:
@@ -419,6 +441,132 @@ OPENAI_API_KEY=your_openai_api_key_here
 - **Visualizations**: `outputs/*.png`
 - **Analysis Report**: `outputs/analysis_report.md`
 ![Complete Analysis](screenshots/analysis_collage.png)
+
+## Docker Configuration
+
+# Build image
+docker build -t autoanalyst .
+
+# Run with custom port
+docker run -p 8001:8000 -e PORT=8000 autoanalyst
+
+# Run with environment file
+docker run -p 8000:8000 --env-file .env autoanalyst
+
+# Using docker-compose
+docker-compose up -d
+
+## Testing
+Test the Live API
+
+# Health check
+curl https://autoanalyst-api.onrender.com/health
+
+# Prediction test
+curl -X POST "https://autoanalyst-api.onrender.com/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "age": 55,
+    "bmi": 28.5,
+    "blood_pressure_systolic": 140,
+    "blood_pressure_diastolic": 90,
+    "cholesterol": 220,
+    "glucose": 120,
+    "exercise_hours_per_week": 3,
+    "gender": "Male",
+    "smoker": "Yes"
+  }'
+Run Test Suite
+
+# Run comprehensive tests
+python test_api.py
+
+# Or use the bash script
+chmod +x test_live_api.sh
+./test_live_api.sh https://autoanalyst-api.onrender.com
+
+## Usage Examples
+## Python Client
+
+import requests
+# Make a prediction
+response = requests.post(
+    "https://autoanalyst-api.onrender.com/predict",
+    json={
+        "age": 55,
+        "bmi": 28.5,
+        "blood_pressure_systolic": 140,
+        "blood_pressure_diastolic": 90,
+        "cholesterol": 220,
+        "glucose": 120,
+        "exercise_hours_per_week": 3,
+        "gender": "Male",
+        "smoker": "Yes"
+    }
+)
+
+result = response.json()
+print(f"Prediction: {result['prediction']}")
+print(f"Probability: {result['probability']:.2%}")
+print(f"Risk Level: {result['risk_level']}")
+
+## JavaScript/Fetch
+fetch('https://autoanalyst-api.onrender.com/predict', {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({
+    age: 55,
+    bmi: 28.5,
+    blood_pressure_systolic: 140,
+    blood_pressure_diastolic: 90,
+    cholesterol: 220,
+    glucose: 120,
+    exercise_hours_per_week: 3,
+    gender: "Male",
+    smoker: "Yes"
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data));
+
+## Using the Saved Model Locally
+import joblib
+import pandas as pd
+
+# Load the trained model
+model = joblib.load('outputs/best_model.pkl')
+
+# Prepare new patient data
+new_patient = pd.DataFrame({
+    'age': [55],
+    'bmi': [28.5],
+    'blood_pressure_systolic': [140],
+    'blood_pressure_diastolic': [90],
+    'cholesterol': [220],
+    'glucose': [120],
+    'exercise_hours_per_week': [3],
+    'gender_Male': [1],  # 1 for Male, 0 for Female
+    'smoker_Yes': [1]    # 1 for Yes, 0 for No
+})
+
+# Make prediction
+prediction = model.predict(new_patient)
+probability = model.predict_proba(new_patient)
+
+print(f"Prediction: {'Heart Disease' if prediction[0] == 1 else 'No Heart Disease'}")
+print(f"Probability: {probability[0][1]:.2%}")
+
+## Key Achievements
+
+- 37.1% F1-Score improvement (0.3019 → 0.4138)
+- 12 AI agents for automated ML pipeline
+- Docker deployment with health checks
+- Production API deployed on Render.com
+- Real-time predictions via REST API
+- SHAP analysis for model transparency
+- <200ms response time
+- Interactive visualizations
+- Complete API documentation
 
 ## 🛠️ Tech Stack
 
@@ -436,62 +584,74 @@ OPENAI_API_KEY=your_openai_api_key_here
 ## 📁 Project Structure
 ```
 AI_agents/
-├── agents/                           # AI agent definitions (9 agents)
+├── agents/                           # AI agent definitions (12 agents)
 │   ├── data_loader_agent.py         # Data quality validation
 │   ├── eda_agent.py                 # Statistical analysis
 │   ├── visualization_agent.py       # Chart interpretation
 │   ├── insight_agent.py             # Insights extraction
 │   ├── report_agent.py              # Report generation
-│   ├── feature_engineer_agent.py    # ✨ Phase 2: Feature engineering
-│   ├── model_selector_agent.py      # ✨ Phase 2: Algorithm selection
-│   ├── model_trainer_agent.py       # ✨ Phase 2: Model training
-│   └── model_evaluator_agent.py     # ✨ Phase 2: Performance evaluation
+│   ├── feature_engineer_agent.py    # Feature engineering
+│   ├── model_selector_agent.py      # Algorithm selection
+│   ├── model_trainer_agent.py       # Model training
+│   ├── model_evaluator_agent.py     # Performance evaluation
+│   ├── automl_agent.py              # AutoML optimization
+│   ├── explainability_agent.py      # SHAP analysis
+│   └── deep_learning_agent.py       # Neural networks
 │
 ├── utils/                            # Helper functions
 │   ├── data_utils.py                # Data loading, EDA, visualizations
-│   └── ml_utils.py                  # ✨ Phase 2: ML training & evaluation
+│   └── ml_utils.py                  # ML training & evaluation
 │
 ├── data/                             # Sample datasets
 │   └── healthcare_data.csv          # Sample healthcare dataset (500 records)
 │
-├── outputs/                          # Generated reports & visualizations
+├── outputs/                          # Generated reports & models
 │   ├── distributions.png            # Distribution plots
 │   ├── correlation_heatmap.png      # Correlation analysis
 │   ├── categorical_distributions.png # Categorical analysis
-│   ├── model_comparison.png         # ✨ Phase 2: Model performance
-│   ├── confusion_matrices.png       # ✨ Phase 2: Confusion matrices
-│   ├── roc_curves.png              # ✨ Phase 2: ROC curves
-│   ├── feature_importance.png      # ✨ Phase 2: Feature rankings
+│   ├── model_comparison.png         # Model performance
+│   ├── confusion_matrices.png       # Confusion matrices
+│   ├── roc_curves.png              # ROC curves
+│   ├── feature_importance.png      # Feature rankings
 │   ├── analysis_report.md          # Phase 1 report
-│   ├── ml_analysis_report.md       # ✨ Phase 2: ML report
-│   └── best_model.pkl              # ✨ Phase 2: Trained model
+│   ├── ml_analysis_report.md       # Phase 2 report
+│   ├── advanced_ml_report.md       # Phase 4 report
+│   └── best_model.pkl              # Trained model
 │
 ├── screenshots/                      # README images
-│   ├── distributions.png            # Phase 1 visualizations
-│   ├── correlation_heatmap.png      
+│   ├── distributions.png
+│   ├── correlation_heatmap.png
 │   ├── categorical_distributions.png
-│   ├── model_comparison.png         # Phase 2 visualizations
-│   ├── confusion_matrices.png       
-│   ├── roc_curves.png               
-│   ├── feature_importance.png       
-│   ├── streamlit_home.png          # ✨ Phase 3: Web interface
-│   ├── streamlit_data_analysis.png # ✨ Phase 3: Data exploration
-│   ├── streamlit_training.png      # ✨ Phase 3: ML training
-│   ├── streamlit_performance.png   # ✨ Phase 3: Results table
-│   └── streamlit_results.png       # ✨ Phase 3: Interactive charts
+│   ├── model_comparison.png
+│   ├── confusion_matrices.png
+│   ├── roc_curves.png
+│   ├── feature_importance.png
+│   ├── streamlit_home.png
+│   ├── streamlit_data_analysis.png
+│   ├── streamlit_training.png
+│   ├── streamlit_performance.png
+│   └── streamlit_results.png
 │
+├── api.py                           # ✨ Phase 5: FastAPI REST API
+├── Dockerfile                       # ✨ Phase 5: Docker configuration
+├── docker-compose.yml               # ✨ Phase 5: Docker Compose setup
+├── render.yaml                      # ✨ Phase 5: Render deployment config
+├── .dockerignore                    # ✨ Phase 5: Docker ignore rules
 ├── main.py                          # Phase 1: Data analysis pipeline
 ├── main_ml.py                       # Phase 2: ML training pipeline
-├── streamlit_app.py                 # ✨ Phase 3: Web dashboard
-├── create_sample_data.py            # Generate sample healthcare data
+├── main_advanced.py                 # Phase 4: Advanced ML pipeline
+├── streamlit_app.py                 # Phase 3: Web dashboard
+├── create_sample_data.py            # Generate sample data
+├── test_api.py                      # API testing script
 ├── .env                             # Environment variables (not in git)
 ├── .env.example                     # Environment template
 ├── .gitignore                       # Git ignore rules
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # Project documentation
+
 ```
 
-### 📊 File Count Summary
+###  File Count Summary
 
 - **9 AI Agents** (5 Phase 1 + 4 Phase 2)
 - **2 Utility Modules** (data processing + ML)
@@ -500,7 +660,8 @@ AI_agents/
 - **3 Analysis Reports** (EDA, ML, Web)
 - **1 Trained Model** (saved as .pkl)
 
-### 🔐 Security Notes
+
+### Security Notes
 
 Files **NOT** tracked in Git (see `.gitignore`):
 - `.env` - Contains API keys
@@ -512,25 +673,27 @@ Files **NOT** tracked in Git (see `.gitignore`):
 
 ##  Use Cases
 
-- Healthcare data analysis
+- Healthcare data analysis & prediction
 - Financial report generation
 - Marketing analytics
 - Research data exploration
-- Educational projects
+- Educational ML projects
+- Enterprise data science automation
 
 
-## 🔮 Future Enhancements
+##  Future Enhancements
 
 - [x] ~~Machine learning model training~~ ✅ Phase 2
 - [x] ~~Interactive Streamlit dashboard~~ ✅ Phase 3
-- [ ] Model deployment with FastAPI
-- [ ] Docker containerization
+- [x] ~~Model deployment with FastAPI~~ ✅ Phase 5
+- [ ] ~~Docker containerization~~ ✅ Phase 5
 - [ ] Deep learning models
-- [ ] SHAP explainability
+- [ ] ~~SHAP explainability~~ ✅ Phase 4
 - [ ] Automated hyperparameter tuning
 - [ ] Time series forecasting
 - [ ] NLP for text analysis
 - [ ] Web scraping for research papers
+
 
 ## License
 
@@ -540,9 +703,14 @@ MIT License
 
 **SAKSHI**
 - GitHub: [https://github.com/Sakshi3027]
+- Live API: autoanalyst-api.onrender.com
 Data Science Student | AI Enthusiast | Building Intelligent Systems
 
 
 ##  Acknowledgments
 
-Built with CrewAI and powered by OpenAI GPT-4o-mini
+- Built with CrewAI
+- Powered by OpenAI GPT-4
+- Deployed on Render
+- Containerized with Docker
+
