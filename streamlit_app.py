@@ -15,7 +15,7 @@ from utils.ml_utils import prepare_ml_data, train_multiple_models, create_ml_vis
 # Page config
 st.set_page_config(
     page_title="AutoAnalyst - AI Data Science Assistant",
-    page_icon="🤖",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -63,7 +63,7 @@ if 'ml_results' not in st.session_state:
     st.session_state.ml_results = None
 
 # Header
-st.markdown('<h1 class="main-header">🤖 AutoAnalyst</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">AutoAnalyst</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align: center; font-size: 1.2rem; color: #666;">AI-Powered Data Science Assistant with Multi-Agent Intelligence</p>', unsafe_allow_html=True)
 
 # Sidebar
@@ -73,12 +73,12 @@ with st.sidebar:
     
     page = st.radio(
         "Choose a page:",
-        ["🏠 Home", "�� Data Analysis", "🤖 ML Pipeline", "📈 Results", "ℹ️ About"],
+        ["Home", "Data Analysis", "ML Pipeline", "Results", "About"],
         label_visibility="collapsed"
     )
     
     st.markdown("---")
-    st.markdown("### 📁 Upload Your Data")
+    st.markdown("### Upload Your Data")
     
     uploaded_file = st.file_uploader(
         "Choose a CSV file",
@@ -89,24 +89,24 @@ with st.sidebar:
     if uploaded_file is not None:
         try:
             st.session_state.df = pd.read_csv(uploaded_file)
-            st.success(f"✅ Loaded: {uploaded_file.name}")
-            st.info(f"Shape: {st.session_state.df.shape[0]} rows × {st.session_state.df.shape[1]} columns")
+            st.success(f"Loaded: {uploaded_file.name}")
+            st.info(f"Shape: {st.session_state.df.shape[0]} rows x {st.session_state.df.shape[1]} columns")
         except Exception as e:
             st.error(f"Error loading file: {e}")
     
     # Sample data option
     st.markdown("---")
-    if st.button("📂 Load Sample Data"):
+    if st.button("Load Sample Data"):
         if os.path.exists("data/healthcare_data.csv"):
             st.session_state.df = pd.read_csv("data/healthcare_data.csv")
-            st.success("✅ Sample healthcare data loaded!")
+            st.success("Sample healthcare data loaded!")
             st.rerun()
         else:
             st.error("Sample data not found!")
     
     st.markdown("---")
     st.markdown("""
-    ### 🎯 Features
+    ### Features
     - Upload any CSV dataset
     - Automated EDA
     - ML model training
@@ -115,15 +115,15 @@ with st.sidebar:
     """)
 
 # Main content based on page selection
-if page == "🏠 Home":
-    st.header("Welcome to AutoAnalyst! 👋")
+if page == "Home":
+    st.header("Welcome to AutoAnalyst")
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
         st.markdown("""
         <div class="metric-card">
-            <h3>📊 Smart Analysis</h3>
+            <h3>Smart Analysis</h3>
             <p>Automated exploratory data analysis with AI-powered insights</p>
         </div>
         """, unsafe_allow_html=True)
@@ -131,7 +131,7 @@ if page == "🏠 Home":
     with col2:
         st.markdown("""
         <div class="metric-card">
-            <h3>🤖 ML Pipeline</h3>
+            <h3>ML Pipeline</h3>
             <p>Train multiple models and compare performance automatically</p>
         </div>
         """, unsafe_allow_html=True)
@@ -139,14 +139,14 @@ if page == "🏠 Home":
     with col3:
         st.markdown("""
         <div class="metric-card">
-            <h3>📈 Visualizations</h3>
+            <h3>Visualizations</h3>
             <p>Beautiful, interactive charts and comprehensive reports</p>
         </div>
         """, unsafe_allow_html=True)
     
     st.markdown("---")
     
-    st.subheader("🚀 Getting Started")
+    st.subheader("Getting Started")
     
     st.markdown("""
     1. **Upload your dataset** using the sidebar (CSV format)
@@ -160,7 +160,7 @@ if page == "🏠 Home":
     st.markdown("---")
     
     # Show architecture
-    st.subheader("🏗️ System Architecture")
+    st.subheader("System Architecture")
     
     col1, col2 = st.columns(2)
     
@@ -183,17 +183,17 @@ if page == "🏠 Home":
         - Model Evaluator Agent
         """)
 
-elif page == "📊 Data Analysis":
-    st.header("📊 Data Analysis")
+elif page == "Data Analysis":
+    st.header("Data Analysis")
     
     if st.session_state.df is None:
-        st.warning("⚠️ Please upload a dataset first using the sidebar!")
-        st.info("💡 Or click 'Load Sample Data' to try with example data")
+        st.warning("Please upload a dataset first using the sidebar!")
+        st.info("Or click 'Load Sample Data' to try with example data")
     else:
         df = st.session_state.df
         
         # Dataset overview
-        st.subheader("📋 Dataset Overview")
+        st.subheader("Dataset Overview")
         
         col1, col2, col3, col4 = st.columns(4)
         
@@ -207,11 +207,11 @@ elif page == "📊 Data Analysis":
             st.metric("Duplicates", df.duplicated().sum())
         
         # Data preview
-        st.subheader("👀 Data Preview")
+        st.subheader("Data Preview")
         st.dataframe(df.head(10), use_container_width=True)
         
         # Column info
-        st.subheader("📊 Column Information")
+        st.subheader("Column Information")
         
         col_info = pd.DataFrame({
             'Column': df.columns,
@@ -224,7 +224,7 @@ elif page == "📊 Data Analysis":
         st.dataframe(col_info, use_container_width=True)
         
         # Statistical summary
-        st.subheader("📈 Statistical Summary")
+        st.subheader("Statistical Summary")
         
         tab1, tab2 = st.tabs(["Numerical Columns", "Categorical Columns"])
         
@@ -239,7 +239,7 @@ elif page == "📊 Data Analysis":
             categorical_cols = df.select_dtypes(include=['object']).columns
             if len(categorical_cols) > 0:
                 for col in categorical_cols:
-                    with st.expander(f"📊 {col}"):
+                    with st.expander(f"{col}"):
                         value_counts = df[col].value_counts()
                         col1, col2 = st.columns([2, 1])
                         
@@ -258,7 +258,7 @@ elif page == "📊 Data Analysis":
                 st.info("No categorical columns found")
         
         # Interactive visualizations
-        st.subheader("📊 Interactive Visualizations")
+        st.subheader("Interactive Visualizations")
         
         viz_type = st.selectbox(
             "Select visualization type",
@@ -306,20 +306,19 @@ elif page == "📊 Data Analysis":
                 fig = px.box(df, y=col, title=f"Box Plot of {col}")
                 st.plotly_chart(fig, use_container_width=True)
 
-elif page == "🤖 ML Pipeline":
-    st.header("🤖 Machine Learning Pipeline")
+elif page == "ML Pipeline":
+    st.header("Machine Learning Pipeline")
     
     if st.session_state.df is None:
-        st.warning("⚠️ Please upload a dataset first!")
+        st.warning("Please upload a dataset first!")
     else:
         df = st.session_state.df
         
-        st.subheader("🎯 Configure ML Pipeline")
+        st.subheader("Configure ML Pipeline")
         
         col1, col2 = st.columns(2)
         
         with col1:
-            # Select target column
             target_col = st.selectbox(
                 "Select Target Column (what to predict)",
                 df.columns,
@@ -327,7 +326,6 @@ elif page == "🤖 ML Pipeline":
             )
         
         with col2:
-            # Problem type
             problem_type = st.selectbox(
                 "Problem Type",
                 ["Classification", "Regression"],
@@ -335,7 +333,7 @@ elif page == "🤖 ML Pipeline":
             )
         
         # Feature selection
-        st.subheader("🔧 Feature Selection")
+        st.subheader("Feature Selection")
         
         available_features = [col for col in df.columns if col != target_col and col != 'patient_id']
         selected_features = st.multiselect(
@@ -347,26 +345,22 @@ elif page == "🤖 ML Pipeline":
         if not selected_features:
             selected_features = available_features
         
-        # Train button
         st.markdown("---")
         
-        if st.button("🚀 Train Models", type="primary"):
+        if st.button("Train Models", type="primary"):
             with st.spinner("Training models... This may take a few minutes..."):
                 try:
-                    # Prepare data
-                    st.info("📊 Preparing data...")
+                    st.info("Preparing data...")
                     X_train, X_test, y_train, y_test, feature_names, scaler = prepare_ml_data(
                         df[selected_features + [target_col]],
                         target_col
                     )
                     
-                    # Train models
-                    st.info("🤖 Training multiple models...")
+                    st.info("Training multiple models...")
                     results, trained_models = train_multiple_models(
                         X_train, X_test, y_train, y_test
                     )
                     
-                    # Store results
                     st.session_state.ml_results = {
                         'results': results,
                         'models': trained_models,
@@ -375,21 +369,19 @@ elif page == "🤖 ML Pipeline":
                         'target_col': target_col
                     }
                     
-                    st.success("✅ Models trained successfully!")
+                    st.success("Models trained successfully!")
                     st.balloons()
                     
                 except Exception as e:
                     st.error(f"Error during training: {e}")
                     st.exception(e)
         
-        # Display results if available
         if st.session_state.ml_results is not None:
             st.markdown("---")
-            st.subheader("📊 Model Performance")
+            st.subheader("Model Performance")
             
             results = st.session_state.ml_results['results']
             
-            # Create comparison dataframe
             comparison_df = pd.DataFrame({
                 'Model': list(results.keys()),
                 'Accuracy': [r['accuracy'] for r in results.values()],
@@ -403,22 +395,20 @@ elif page == "🤖 ML Pipeline":
                 use_container_width=True
             )
             
-            # Best model
             best_model = comparison_df.loc[comparison_df['F1-Score'].idxmax(), 'Model']
-            st.success(f"🏆 Best Model: **{best_model}**")
+            st.success(f"Best Model: **{best_model}**")
 
-elif page == "📈 Results":
-    st.header("📈 Results & Insights")
+elif page == "Results":
+    st.header("Results & Insights")
     
     if st.session_state.ml_results is None:
-        st.warning("⚠️ Please train models first in the ML Pipeline page!")
+        st.warning("Please train models first in the ML Pipeline page!")
     else:
         results = st.session_state.ml_results['results']
         feature_names = st.session_state.ml_results['feature_names']
         models = st.session_state.ml_results['models']
         
-        # Model comparison chart
-        st.subheader("📊 Model Comparison")
+        st.subheader("Model Comparison")
         
         comparison_data = []
         for model_name, metrics in results.items():
@@ -441,8 +431,7 @@ elif page == "📈 Results":
         )
         st.plotly_chart(fig, use_container_width=True)
         
-        # Confusion matrices
-        st.subheader("🎯 Confusion Matrices")
+        st.subheader("Confusion Matrices")
         
         cols = st.columns(2)
         for idx, (model_name, result) in enumerate(results.items()):
@@ -458,8 +447,7 @@ elif page == "📈 Results":
                 )
                 st.plotly_chart(fig, use_container_width=True)
         
-        # ROC Curves
-        st.subheader("📈 ROC Curves")
+        st.subheader("ROC Curves")
         
         fig = go.Figure()
         fig.add_trace(go.Scatter(
@@ -492,9 +480,8 @@ elif page == "📈 Results":
         
         st.plotly_chart(fig, use_container_width=True)
         
-        # Feature importance
         if 'Random Forest' in models:
-            st.subheader("🔍 Feature Importance")
+            st.subheader("Feature Importance")
             
             rf_model = models['Random Forest']
             if hasattr(rf_model, 'feature_importances_'):
@@ -512,22 +499,22 @@ elif page == "📈 Results":
                 )
                 st.plotly_chart(fig, use_container_width=True)
 
-elif page == "ℹ️ About":
-    st.header("ℹ️ About AutoAnalyst")
+elif page == "About":
+    st.header("About AutoAnalyst")
     
     st.markdown("""
-    ### 🤖 What is AutoAnalyst?
+    ### What is AutoAnalyst?
     
     AutoAnalyst is an intelligent, multi-agent AI system that automates the entire data science workflow.
     Built using CrewAI and powered by GPT-4, it features specialized AI agents that collaborate to:
     
-    - 📊 Perform comprehensive exploratory data analysis
-    - 🤖 Train and compare multiple machine learning models
-    - 📈 Generate interactive visualizations
-    - 💡 Extract actionable insights
-    - 📄 Create professional reports
+    - Perform comprehensive exploratory data analysis
+    - Train and compare multiple machine learning models
+    - Generate interactive visualizations
+    - Extract actionable insights
+    - Create professional reports
     
-    ### 🏗️ Architecture
+    ### Architecture
     
     **Phase 1: Data Analysis Pipeline**
     - Data Loader Agent
@@ -542,7 +529,7 @@ elif page == "ℹ️ About":
     - Model Trainer Agent
     - Model Evaluator Agent
     
-    ### 🛠️ Tech Stack
+    ### Tech Stack
     
     - **Frontend**: Streamlit
     - **AI Framework**: CrewAI
@@ -551,13 +538,13 @@ elif page == "ℹ️ About":
     - **Visualization**: Plotly, Matplotlib, Seaborn
     - **Data Processing**: Pandas, NumPy
     
-    ### 👨‍💻 Developer
+    ### Developer
     
     **Sakshi**
     - GitHub: [@Sakshi3027](https://github.com/Sakshi3027)
     - Project: [AI_agents](https://github.com/Sakshi3027/AI_agents)
     
-    ### 📝 License
+    ### License
     
     MIT License - Feel free to use and modify!
     
@@ -570,7 +557,7 @@ elif page == "ℹ️ About":
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666;'>
-    <p>AutoAnalyst v2.0 | Built with CrewAI × Streamlit × GPT-4</p>
+    <p>AutoAnalyst v2.0 | Built with CrewAI x Streamlit x GPT-4</p>
     <p>Made by <a href='https://github.com/Sakshi3027'>Sakshi</a></p>
 </div>
 """, unsafe_allow_html=True)
